@@ -1,0 +1,120 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Hôte : 127.0.0.1:3306
+-- Généré le : lun. 17 juin 2024 à 14:43
+-- Version du serveur : 8.2.0
+-- Version de PHP : 8.2.13
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de données : `ticketing`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `client`
+--
+
+DROP TABLE IF EXISTS `client`;
+CREATE TABLE IF NOT EXISTS `client` (
+  `id_client` int NOT NULL AUTO_INCREMENT,
+  `nom` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `prenom` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `telephone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  PRIMARY KEY (`id_client`)
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `client`
+--
+
+INSERT INTO `client` (`id_client`, `nom`, `prenom`, `email`, `telephone`) VALUES
+(5, 'ori', 'gan', 'ori@gan.gmail.com', '055400220533'),
+(6, 'Gervoise', 'Sara', 'sara.gervoise09@gmail.com', '0781210750'),
+(7, 'fse', 'sefff', 'ffffff@efsf', 'aaaezaeaeeae');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `tache`
+--
+
+DROP TABLE IF EXISTS `tache`;
+CREATE TABLE IF NOT EXISTS `tache` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `contenu` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `checked` tinyint(1) NOT NULL,
+  `id_ticket` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_ticket` (`id_ticket`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `tache`
+--
+
+INSERT INTO `tache` (`id`, `contenu`, `checked`, `id_ticket`) VALUES
+(1, 'demonter pc', 0, 16),
+(3, 'gh', 0, 16),
+(4, 'manger les fraises', 0, 16),
+(5, 'pig pig le got', 0, 17),
+(11, 'fraise fraise', 0, 17);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `ticket`
+--
+
+DROP TABLE IF EXISTS `ticket`;
+CREATE TABLE IF NOT EXISTS `ticket` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `status` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `priorite` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `titre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `Model` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Marque` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Diagnostique` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Mdp_Session` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `id_client` int NOT NULL,
+  `date_depot` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_client` (`id_client`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `ticket`
+--
+
+INSERT INTO `ticket` (`id`, `status`, `priorite`, `titre`, `Model`, `Marque`, `Diagnostique`, `Mdp_Session`, `id_client`, `date_depot`) VALUES
+(16, 'En attente', 'Haute', 'Problème de démarrage', 'MacBook Pro', 'Apple', 'Problème de batterie', 'apple123', 5, '2024-06-03 09:00:00'),
+(17, 'En attente', 'Moyenne', 'Écran noir', 'ThinkPad X1 Carbon', 'Lenovo', 'Problème de connexion internet', 'lenovo456', 6, '2024-06-03 10:30:00'),
+(18, 'En attente', 'Basse', 'Clavier défectueux', 'Surface Laptop', 'Microsoft', 'Virus détecté', 'microsoft789', 7, '2024-06-03 11:45:00');
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `tache`
+--
+ALTER TABLE `tache`
+  ADD CONSTRAINT `tache_ibfk_1` FOREIGN KEY (`id_ticket`) REFERENCES `ticket` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
